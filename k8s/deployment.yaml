@@ -19,28 +19,6 @@ spec:
         - name: goserver
           image: igorsb11/golang-server:v7.1
 
-          startupProbe:
-            httpGet:
-              path: "/healthz"
-              port: 8000
-            periodSeconds: 3
-            failureThreshold: 30
-
-          readinessProbe:
-            httpGet:
-              path: "/healthz"
-              port: 8000
-            periodSeconds: 3
-            failureThreshold: 1
-
-          livenessProbe:
-            httpGet:
-              path: "/healthz"
-              port: 8000
-            periodSeconds: 5
-            failureThreshold: 1
-            timeoutSeconds: 1
-            successThreshold: 1
           envFrom:
             - configMapRef:
                 name: goserver-env
@@ -50,6 +28,15 @@ spec:
           volumeMounts:
             - mountPath: "/go/myfamily"
               name: config
+
+          resources:
+            requests:
+              cpu: "0.3"
+              memory: 20Mi
+            limits:
+              cpu: "0.3"
+              memory: 25Mi
+
       volumes:
         - name: config
           configMap:
