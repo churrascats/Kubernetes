@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", Hello)
-	http.HandleFunc("/", ConfigMap)
+	http.HandleFunc("/ConfigMap", ConfigMap)
+	http.HandleFunc("/Hello", Hello)
 	http.ListenAndServe(":8000", nil)
 }
 
@@ -21,7 +21,7 @@ func Hello(w http.ResponseWriter, r *http.Request) {
 }
 
 func ConfigMap(w http.ResponseWriter, r *http.Request) {
-	data, err := os.ReadFile("myfamily/family.txt")
+	data, err := os.ReadFile("/go/myfamily/family.txt")
 	if err != nil {
 		log.Fatalf("Error reading config file %s", err)
 	}
