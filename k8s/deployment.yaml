@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       app: goserver
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       name: goserver
@@ -17,15 +17,22 @@ spec:
     spec:
       containers:
         - name: goserver
-          image: igorsb11/golang-server:v7
-          livenessProbe:
+          image: igorsb11/golang-server:7.1
+          #livenessProbe:
+          #  httpGet:
+          #    path: "/healthz"
+          #    port: 8000
+          #  periodSeconds: 5
+          #  failureThreshold: 3
+          #  timeoutSeconds: 1
+          #  successThreshold: 1
+          readinessProbe:
             httpGet:
               path: "/healthz"
               port: 8000
-            periodSeconds: 5
-            failureThreshold: 3
-            timeoutSeconds: 1
-            successThreshold: 1
+            periodSeconds: 3
+            failureThreshold: 1
+            initialDelaySeconds: 10
           envFrom:
             - configMapRef:
                 name: goserver-env
